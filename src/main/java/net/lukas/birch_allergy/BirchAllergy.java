@@ -2,10 +2,13 @@ package net.lukas.birch_allergy;
 
 import com.mojang.logging.LogUtils;
 import net.lukas.birch_allergy.effect.ModEffects;
-import net.minecraft.world.damagesource.DamageEffects;
-import net.minecraft.world.damagesource.DamageType;
-import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.damagesource.DeathMessageType;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.*;
+import net.minecraft.world.level.Explosion;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -28,25 +31,18 @@ public class BirchAllergy
     public static final String MOD_ID = "birch_allergy";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
-public DamageType allergyDamage;
-    public BirchAllergy()
-    {
+    public BirchAllergy() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        ModEffects.register(modEventBus);
 
-        // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
-        // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
 
-        // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
 
-        ModEffects.register(modEventBus);
-        allergyDamage = new DamageType("death.attack.allergy" , 1.0F , DamageEffects.HURT);
-
-        // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        MinecraftForge.EVENT_BUS.register(BirchAllergyEvents.class);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
