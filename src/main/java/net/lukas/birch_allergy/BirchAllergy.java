@@ -1,6 +1,11 @@
 package net.lukas.birch_allergy;
 
 import com.mojang.logging.LogUtils;
+import net.lukas.birch_allergy.effect.ModEffects;
+import net.minecraft.world.damagesource.DamageEffects;
+import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.damagesource.DeathMessageType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -23,7 +28,7 @@ public class BirchAllergy
     public static final String MOD_ID = "birch_allergy";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
-
+public DamageType allergyDamage;
     public BirchAllergy()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -36,6 +41,9 @@ public class BirchAllergy
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
+
+        ModEffects.register(modEventBus);
+        allergyDamage = new DamageType("death.attack.allergy" , 1.0F , DamageEffects.HURT);
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
