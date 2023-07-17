@@ -2,8 +2,11 @@ package net.lukas.birch_allergy;
 
 import net.lukas.birch_allergy.effect.ModEffects;
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.AbstractMinecart;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -12,7 +15,6 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.OptionalInt;
-
 public class BirchAllergyEvents {
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event) {
@@ -35,5 +37,17 @@ public class BirchAllergyEvents {
         }
         ticks++;
         player.getPersistentData().putInt("ticks", ticks);
+    }
+
+    @SubscribeEvent
+    public static void onTick(TickEvent.ServerTickEvent event) {
+        final double speed = 0.82;
+        for(ServerLevel level : event.getServer().getAllLevels()) {
+            for(Entity entity : level.getAllEntities()) {
+                if(entity instanceof AbstractMinecart) {
+                    entity.setDeltaMovement(entity.getDeltaMovement().multiply(speed, 1, speed));
+                }
+            }
+        }
     }
 }

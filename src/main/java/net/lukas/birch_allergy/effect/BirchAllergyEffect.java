@@ -32,11 +32,11 @@ public class BirchAllergyEffect extends MobEffect {
         e.getPersistentData().putInt("allergy_ticks", ticks);
         if(Math.random() < 0.01*amplifier && !e.level().isClientSide()) {
             ServerLevel level = (ServerLevel) e.level();
-            level.sendParticles(ParticleTypes.SNEEZE, e.getX(), e.getY()+1.8, e.getZ(), 100, 0, 0, 0, 0.04);
-            e.addEffect(new MobEffectInstance(MobEffects.POISON, 20, 3));
-            e.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 4));
-            e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 10, 3));
-            e.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 10, 3));
+            level.sendParticles(ParticleTypes.SNEEZE, e.getX(), e.getY()+1.8, e.getZ(), 60, 0, 0, 0, 0.04);
+            e.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 3));
+            e.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 120, 4));
+            e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 3));
+            e.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 40, 3));
             level.playSound(null, e.getOnPos(), SoundEvents.PANDA_SNEEZE, SoundSource.MASTER, 2F, 0.4F);
         }
     }
