@@ -1,4 +1,5 @@
 {
   "effect.birch_allergy.birch_allergy": "Birch Allergy",
-  "death.attack.death.effect.allergy": "%s forgot his allergy spray"
+  "death.attack.death.effect.allergy": "%s forgot his allergy spray",
+  "death.attack.death.effect.allergy.player": "%s forgot to take his allergy spray while fighting %s"
 }
