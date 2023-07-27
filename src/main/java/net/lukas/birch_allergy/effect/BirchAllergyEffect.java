@@ -37,6 +37,7 @@ public class BirchAllergyEffect extends MobEffect {
             e.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 120, 4));
             e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 3));
             e.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 40, 3));
+            e.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 80, 3));
             level.playSound(null, e.getOnPos(), SoundEvents.PANDA_SNEEZE, SoundSource.MASTER, 2F, 0.4F);
         }
     }
