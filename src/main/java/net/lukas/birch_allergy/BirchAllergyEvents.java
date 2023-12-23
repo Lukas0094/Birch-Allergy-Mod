@@ -18,6 +18,18 @@ import java.util.OptionalInt;
 public class BirchAllergyEvents {
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event) {
+        allergyTick(event);
+        projectileTick(event);
+    }
+
+    public static void projectileTick(TickEvent.PlayerTickEvent event) {
+        Player player = event.player;
+        Level level = player.level();
+        if(level.isClientSide()) return;
+
+    }
+
+    public static void allergyTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
         Level level = player.level();
         int ticks = player.getPersistentData().getInt("ticks");
@@ -29,7 +41,9 @@ public class BirchAllergyEvents {
                         BlockPos pos = player.getOnPos().offset(x, y, z);
                         BlockState state = level.getBlockState(pos);
                         if(state.getBlock() == Blocks.BIRCH_LEAVES && !LeavesBlock.getOptionalDistanceAt(state).equals(OptionalInt.of(7)) && !state.getValue(LeavesBlock.PERSISTENT)) {
-                            player.addEffect(new MobEffectInstance(ModEffects.BIRCH_ALLERGY.get(), 400, 1));
+                            if(player.getEffect(ModEffects.ALLERGY_SPRAY.get()) == null) {
+                                player.addEffect(new MobEffectInstance(ModEffects.BIRCH_ALLERGY.get(), 400, 1));
+                            }
                         }
                     }
                 }
@@ -38,7 +52,6 @@ public class BirchAllergyEvents {
         ticks++;
         player.getPersistentData().putInt("ticks", ticks);
     }
-
     @SubscribeEvent
     public static void onTick(TickEvent.ServerTickEvent event) {
         final double speed = 0.82;

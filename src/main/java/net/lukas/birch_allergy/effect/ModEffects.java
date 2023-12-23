@@ -15,6 +15,9 @@ public class ModEffects {
     public static final RegistryObject<MobEffect> BIRCH_ALLERGY = MOB_EFFECTS.register("birch_allergy",
             () -> new BirchAllergyEffect(MobEffectCategory.HARMFUL, 5342281));
 
+    public static final RegistryObject<MobEffect> ALLERGY_SPRAY = MOB_EFFECTS.register("allergy_spray",
+            () -> new AllergySprayEffect(MobEffectCategory.BENEFICIAL, 16769044));
+
     public static void register(IEventBus eventBus) {
         MOB_EFFECTS.register(eventBus);
     }

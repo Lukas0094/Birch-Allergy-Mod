@@ -1,5 +1,9 @@
 {
   "effect.birch_allergy.birch_allergy": "Birch Allergy",
+  "effect.birch_allergy.allergy_spray": "Allergy Protection",
+  "allergy_tab": "Birch Allergy",
+  "item.birch_allergy.allergy_spray": "Allergy Spray",
+  "item.birch_allergy.birch_cannon": "Birch Obliterator",
   "death.attack.death.effect.allergy": "%s forgot his allergy spray",
   "death.attack.death.effect.allergy.player": "%s forgot to take his allergy spray whilst fighting %s"
 }

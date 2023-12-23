@@ -1,0 +1,26 @@
+{
+  "spray": {
+    "sounds": [
+      {
+        "name": "birch_allergy:spray",
+        "stream": false
+      }
+    ]
+  },
+  "gunfire": {
+    "sounds": [
+      {
+        "name": "birch_allergy:gunfire",
+        "stream": false
+      }
+    ]
+  },
+  "charge_up": {
+    "sounds": [
+      {
+        "name": "birch_allergy:charge_up",
+        "stream": false
+      }
+    ]
+  }
+}

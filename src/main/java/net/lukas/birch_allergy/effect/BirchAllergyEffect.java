@@ -36,7 +36,7 @@ public class BirchAllergyEffect extends MobEffect {
             e.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 3));
             e.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 120, 4));
             e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 80, 3));
-            e.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 40, 3));
+            e.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 30, 3));
             e.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 80, 3));
             level.playSound(null, e.getOnPos(), SoundEvents.PANDA_SNEEZE, SoundSource.MASTER, 2F, 0.4F);
         }
@@ -47,7 +47,7 @@ public class BirchAllergyEffect extends MobEffect {
         return true;
     }
 
-    public DamageSource getDamageSource(Level level) {
+    public static DamageSource getDamageSource(Level level) {
         Registry<DamageType> damageTypes = level.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE);
         ResourceKey<DamageType> ALLERGY_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("birch_allergy", "allergy_damage"));
         return new DamageSource(damageTypes.getHolderOrThrow(ALLERGY_DAMAGE));
