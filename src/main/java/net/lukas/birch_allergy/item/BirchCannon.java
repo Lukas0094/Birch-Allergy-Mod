@@ -5,7 +5,13 @@ import net.lukas.birch_allergy.effect.BirchAllergyEffect;
 import net.lukas.birch_allergy.effect.ModEffects;
 import net.lukas.birch_allergy.sound.SoundRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
+import net.minecraft.core.Vec3i;
+import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
+import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
+import net.minecraft.network.protocol.game.ClientboundSectionBlocksUpdatePacket;
 import net.minecraft.network.protocol.game.ClientboundStopSoundPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -22,12 +28,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 
+import java.util.HashSet;
 import java.util.List;
 
 public class BirchCannon extends Item {
@@ -84,20 +95,24 @@ public class BirchCannon extends Item {
         float dx = -Mth.sin(entity.getYRot() * (0.017453292f)) * Mth.cos(entity.getXRot() * (0.017453292f));
         float dy = -Mth.sin((entity.getXRot()) * (0.017453292f));
         float dz = Mth.cos(entity.getYRot() * (0.017453292f)) * Mth.cos(entity.getXRot() * (0.017453292f));
-        BlockPos damagePos = raycast(level, dx, dy, dz, entity);
+        BlockPos damagePos = raycast(level, dx, dy, dz, entity, intensity);
         if(damagePos != null) explosion(level, damagePos, intensity);
     }
 
-    public BlockPos raycast(ServerLevel level, float dx, float dy, float dz, LivingEntity entity) {
-        for(int i = 0; i<getRange(); i++) {
-            BlockPos position = new BlockPos(Mth.floor(dx*i+entity.getX()+0.5), Mth.floor(dy*i+entity.getY()+1.8), Mth.floor(dz*i+entity.getZ()+0.5));
+    public BlockPos raycast(ServerLevel level, float dx, float dy, float dz, LivingEntity entity, int intensity) {
+        for(int i = 0; i<getRange()*1.5; i++) {
+            BlockPos position = new BlockPos(Mth.floor(dx*i/1.5+entity.getX()+0.5), Mth.floor(dy*i/1.5+entity.getY()+1.8), Mth.floor(dz*i/1.5+entity.getZ()+0.5));
             if(!level.getBlockState(position).isAir()) return position;
             List<Entity> entities = getEntitiesInBox(level, position, entity);
             for(Entity e : entities) {
                 if(!(e instanceof ItemEntity)) return position;
             }
+            int particles = (int) ((float) intensity / 20F);
             for(ServerPlayer player : level.players()) {
-                level.sendParticles(player, ParticleTypes.SNEEZE, true, position.getX(), position.getY(), position.getZ(), 4, 0, 0, 0, 0.04);
+                level.sendParticles(player, ParticleTypes.SNEEZE, true, position.getX(), position.getY(), position.getZ(), Math.min(intensity, 20), 0, 0, 0, 0.04);
+                if(intensity > 45) {
+                    level.sendParticles(player, new DustParticleOptions(new Vector3f(0.2F, 0.9F, 0.05F), (float) intensity / 45F), true, position.getX(), position.getY(), position.getZ(), particles, 0, 0, 0, 0.04);
+                }
             }
         }
         return null;
@@ -122,7 +137,8 @@ public class BirchCannon extends Item {
                         }
                         continue;
                     }
-                    level.setBlockAndUpdate(position, Blocks.AIR.defaultBlockState());
+                    breakBlockFast(level, position);
+                    level.getChunkSource().blockChanged(position);
                 }
             }
         }
@@ -139,6 +155,19 @@ public class BirchCannon extends Item {
                 e.hurt(BirchAllergyEffect.getDamageSource(level), intensity/3F);
             }
         }
+    }
+
+    public static void breakBlockFast(ServerLevel level, BlockPos pos) {
+        SectionPos sectionPos = SectionPos.of(pos);
+        LevelChunkSection section = level.getChunk(sectionPos.x(), sectionPos.z()).getSection(level.getSectionIndexFromSectionY(sectionPos.y()));
+        byte x = (byte) (pos.getX() & 15);
+        byte y = (byte) (pos.getY() & 15);
+        byte z = (byte) (pos.getZ() & 15);
+        breakBlock(section, x, y, z);
+    }
+
+    private static void breakBlock(LevelChunkSection section, byte x, byte y, byte z) {
+        section.getStates().set(x, y, z, Blocks.AIR.defaultBlockState());
     }
 
     public static List<Entity> getEntitiesInBox(Level level, BlockPos position, @Nullable Entity entity) {
