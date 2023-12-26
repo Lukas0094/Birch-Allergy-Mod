@@ -131,7 +131,6 @@ public class BirchCannon extends Item {
                         continue;
                     }
                     breakBlockFast(level, position);
-                    level.getChunkSource().blockChanged(position);
                 }
             }
         }
@@ -158,6 +157,7 @@ public class BirchCannon extends Item {
         byte y = (byte) (pos.getY() & 15);
         byte z = (byte) (pos.getZ() & 15);
         breakBlock(section, x, y, z);
+        level.getChunkSource().blockChanged(pos);
     }
 
     private static void breakBlock(LevelChunkSection section, byte x, byte y, byte z) {
