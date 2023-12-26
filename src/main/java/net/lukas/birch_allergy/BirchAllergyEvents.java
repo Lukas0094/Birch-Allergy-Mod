@@ -19,14 +19,6 @@ public class BirchAllergyEvents {
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event) {
         allergyTick(event);
-        projectileTick(event);
-    }
-
-    public static void projectileTick(TickEvent.PlayerTickEvent event) {
-        Player player = event.player;
-        Level level = player.level();
-        if(level.isClientSide()) return;
-
     }
 
     public static void allergyTick(TickEvent.PlayerTickEvent event) {

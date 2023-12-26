@@ -6,12 +6,8 @@ import net.lukas.birch_allergy.effect.ModEffects;
 import net.lukas.birch_allergy.sound.SoundRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
-import net.minecraft.core.Vec3i;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
-import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket;
-import net.minecraft.network.protocol.game.ClientboundSectionBlocksUpdatePacket;
 import net.minecraft.network.protocol.game.ClientboundStopSoundPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -28,17 +24,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
-import java.util.HashSet;
 import java.util.List;
 
 public class BirchCannon extends Item {
@@ -158,6 +151,7 @@ public class BirchCannon extends Item {
     }
 
     public static void breakBlockFast(ServerLevel level, BlockPos pos) {
+        if(level.isOutsideBuildHeight(pos.getY())) return;
         SectionPos sectionPos = SectionPos.of(pos);
         LevelChunkSection section = level.getChunk(sectionPos.x(), sectionPos.z()).getSection(level.getSectionIndexFromSectionY(sectionPos.y()));
         byte x = (byte) (pos.getX() & 15);

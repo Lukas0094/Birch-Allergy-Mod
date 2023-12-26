@@ -31,7 +31,6 @@ public class BirchAllergy
         modEventBus.addListener(this::commonSetup);
 
         MinecraftForge.EVENT_BUS.register(this);
-
         modEventBus.addListener(this::addCreative);
         ItemRegistry.register(modEventBus);
         SoundRegistry.register(modEventBus);
