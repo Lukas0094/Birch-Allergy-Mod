@@ -1,6 +1,7 @@
 package net.lukas.birch_allergy;
 
 import com.mojang.logging.LogUtils;
+import net.lukas.birch_allergy.block.ModBlocks;
 import net.lukas.birch_allergy.effect.ModEffects;
 import net.lukas.birch_allergy.item.AllergyTab;
 import net.lukas.birch_allergy.item.ItemRegistry;
@@ -33,6 +34,7 @@ public class BirchAllergy
         MinecraftForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
         ItemRegistry.register(modEventBus);
+        ModBlocks.register(modEventBus);
         SoundRegistry.register(modEventBus);
         AllergyTab.register(modEventBus);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
