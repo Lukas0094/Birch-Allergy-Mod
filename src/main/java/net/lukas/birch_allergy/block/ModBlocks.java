@@ -23,6 +23,14 @@ public class ModBlocks {
             () -> new BirchEssenceBucketBlock(BlockBehaviour.Properties.of()
                     .strength(0.2f).noOcclusion().forceSolidOn()));
 
+    public static final RegistryObject<Block> DEAD_VILLAGER_OAK_SIGN = registerBlock("dead_villager_oak_sign",
+            () -> new DeadVillagerOakSignBlock(BlockBehaviour.Properties.of()
+                    .strength(0.2f).noOcclusion().forceSolidOn()));
+
+    public static final RegistryObject<Block> DEAD_VILLAGER_OAK_SIGN_TRIDENT = registerBlock("dead_villager_oak_sign_trident",
+            () -> new DeadVillagerOakSignTridentBlock(BlockBehaviour.Properties.of()
+                    .strength(0.2f).noOcclusion().forceSolidOn()));
+
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);

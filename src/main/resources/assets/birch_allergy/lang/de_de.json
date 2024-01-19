@@ -7,5 +7,7 @@
   "item.birch_allergy.birch_essence": "Birken Essenz",
   "death.attack.death.effect.allergy": "%s hat sein Allergie-Spray vergessen",
   "death.attack.death.effect.allergy.player": "%s hat vergessen sein Allergie-Spray zu nutzen während er mit %s gekämpft hat",
-  "block.birch_allergy.birch_essence_bucket": "Birken Essenz Eimer"
+  "block.birch_allergy.birch_essence_bucket": "Birken Essenz Eimer",
+  "block.birch_allergy.dead_villager_oak_sign": "Toter Dorfbewohner Eichenschild",
+  "block.birch_allergy.dead_villager_oak_sign_trident": "Toter Dorfbewohner Eichenschild (Dreizack)"
 }

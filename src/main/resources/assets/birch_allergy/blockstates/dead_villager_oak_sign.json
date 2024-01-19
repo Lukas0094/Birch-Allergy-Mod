@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "birch_allergy:block/dead_villager_oak_sign"
+    },
+    "facing=south": {
+      "model": "birch_allergy:block/dead_villager_oak_sign",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "birch_allergy:block/dead_villager_oak_sign",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "birch_allergy:block/dead_villager_oak_sign",
+      "y": 90
+    }
+  }
+}
