@@ -28,6 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
@@ -94,6 +95,7 @@ public class BirchCannon extends Item {
 
     public BlockPos raycast(ServerLevel level, float dx, float dy, float dz, LivingEntity entity, int intensity) {
         for(int i = 0; i<getRange()*1.5; i++) {
+            Vec3 particlePos = new Vec3(dx*i/1.5+entity.getX()+0.5, dy*i/1.5+entity.getY()+1.8, dz*i/1.5+entity.getZ()+0.5);
             BlockPos position = new BlockPos(Mth.floor(dx*i/1.5+entity.getX()+0.5), Mth.floor(dy*i/1.5+entity.getY()+1.8), Mth.floor(dz*i/1.5+entity.getZ()+0.5));
             if(!level.getBlockState(position).isAir()) return position;
             List<Entity> entities = getEntitiesInBox(level, position, entity);
@@ -102,7 +104,7 @@ public class BirchCannon extends Item {
             }
             int particles = (int) ((float) intensity / 20F);
             for(ServerPlayer player : level.players()) {
-                level.sendParticles(player, ParticleTypes.SNEEZE, true, position.getX(), position.getY(), position.getZ(), Math.min(intensity, 20), 0, 0, 0, 0.04);
+                level.sendParticles(player, ParticleTypes.SNEEZE, true, particlePos.x(), particlePos.y(), particlePos.z(), Math.min(intensity, 20), 0, 0, 0, 0.04);
                 if(intensity > 45) {
                     level.sendParticles(player, new DustParticleOptions(new Vector3f(0.2F, 0.9F, 0.05F), (float) intensity / 45F), true, position.getX(), position.getY(), position.getZ(), particles, 0, 0, 0, 0.04);
                 }
