@@ -37,7 +37,7 @@ import java.util.List;
 
 public class BirchCannon extends Item {
     public BirchCannon(Item.Properties p) {
-        super(p);
+        super(p.stacksTo(1));
     }
 
     @Override
