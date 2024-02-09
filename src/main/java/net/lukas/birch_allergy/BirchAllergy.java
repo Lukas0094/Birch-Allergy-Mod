@@ -1,8 +1,8 @@
 package net.lukas.birch_allergy;
 
-import com.mojang.logging.LogUtils;
 import net.lukas.birch_allergy.block.ModBlocks;
 import net.lukas.birch_allergy.effect.ModEffects;
+import net.lukas.birch_allergy.entity.EntityRegistry;
 import net.lukas.birch_allergy.item.AllergyTab;
 import net.lukas.birch_allergy.item.ItemRegistry;
 import net.lukas.birch_allergy.sound.SoundRegistry;
@@ -18,13 +18,11 @@ import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.slf4j.Logger;
 
 @Mod(BirchAllergy.MOD_ID)
 public class BirchAllergy
 {
     public static final String MOD_ID = "birch_allergy";
-    private static final Logger LOGGER = LogUtils.getLogger();
     public BirchAllergy() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModEffects.register(modEventBus);
@@ -33,6 +31,7 @@ public class BirchAllergy
 
         MinecraftForge.EVENT_BUS.register(this);
         modEventBus.addListener(this::addCreative);
+        EntityRegistry.ENTITIES.register(modEventBus);
         ItemRegistry.register(modEventBus);
         ModBlocks.register(modEventBus);
         SoundRegistry.register(modEventBus);

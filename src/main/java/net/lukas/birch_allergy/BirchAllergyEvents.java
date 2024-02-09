@@ -15,6 +15,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.OptionalInt;
+
 public class BirchAllergyEvents {
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event) {
@@ -44,6 +45,7 @@ public class BirchAllergyEvents {
         ticks++;
         player.getPersistentData().putInt("ticks", ticks);
     }
+
     @SubscribeEvent
     public static void onTick(TickEvent.ServerTickEvent event) {
         final double speed = 0.82;
