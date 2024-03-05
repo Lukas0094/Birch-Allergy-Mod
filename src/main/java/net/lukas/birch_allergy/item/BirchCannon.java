@@ -52,6 +52,16 @@ public class BirchCannon extends Item {
         if(timeTillEnd == 5) {
             releaseUsing(stack, level, entity, 5);
         }
+        if(!level.isClientSide()) {
+            Vec3 lookVector = entity.getLookAngle();
+            Vec3 eyePosition = entity.getEyePosition();
+            Vec3 particlePos = lookVector.add(eyePosition).add(0, -0.42, 0);
+            ServerLevel serverLevel = (ServerLevel) level;
+            for(ServerPlayer player : serverLevel.players()) {
+                serverLevel.sendParticles(player, new DustParticleOptions(new Vector3f(0.2F, 0.9F, 0.05F), 1.5F), true, particlePos.x(), particlePos.y(), particlePos.z(), 1, 0.05, 0.05, 0.05, 0.04);
+                serverLevel.sendParticles(player, ParticleTypes.SNEEZE, true, particlePos.x(), particlePos.y(), particlePos.z(), 2, 0, 0, 0, 0.1);
+            }
+        }
     }
 
     public int getUseDuration(@Nullable ItemStack stack) {
@@ -94,9 +104,10 @@ public class BirchCannon extends Item {
     }
 
     public BlockPos raycast(ServerLevel level, float dx, float dy, float dz, LivingEntity entity, int intensity) {
-        for(int i = 0; i<getRange()*1.5; i++) {
-            Vec3 particlePos = new Vec3(dx*i/1.5+entity.getX()+0.5, dy*i/1.5+entity.getY()+1.8, dz*i/1.5+entity.getZ()+0.5);
-            BlockPos position = new BlockPos(Mth.floor(dx*i/1.5+entity.getX()+0.5), Mth.floor(dy*i/1.5+entity.getY()+1.8), Mth.floor(dz*i/1.5+entity.getZ()+0.5));
+        double step = 1.4;
+        for(int i = 0; i<getRange()*step; i++) {
+            Vec3 particlePos = new Vec3(dx*i/step+entity.getX(), dy*i/step+entity.getY()+1.38, dz*i/step+entity.getZ());
+            BlockPos position = BlockPos.containing(particlePos);
             if(!level.getBlockState(position).isAir()) return position;
             List<Entity> entities = getEntitiesInBox(level, position, entity);
             for(Entity e : entities) {
@@ -106,7 +117,7 @@ public class BirchCannon extends Item {
             for(ServerPlayer player : level.players()) {
                 level.sendParticles(player, ParticleTypes.SNEEZE, true, particlePos.x(), particlePos.y(), particlePos.z(), Math.min(intensity, 20), 0, 0, 0, 0.04);
                 if(intensity > 45) {
-                    level.sendParticles(player, new DustParticleOptions(new Vector3f(0.2F, 0.9F, 0.05F), (float) intensity / 45F), true, position.getX(), position.getY(), position.getZ(), particles, 0, 0, 0, 0.04);
+                    level.sendParticles(player, new DustParticleOptions(new Vector3f(0.2F, 0.9F, 0.05F), (float) intensity / 45F), true, particlePos.x(), particlePos.y(), particlePos.z(), particles, 0, 0, 0, 0.04);
                 }
             }
         }
