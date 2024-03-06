@@ -19,6 +19,8 @@ public class AllergyTab {
                     .displayItems((pParameters, pOutput) -> {
                         pOutput.accept(ItemRegistry.ALLERGY_SPRAY.get());
                         pOutput.accept(ItemRegistry.BIRCH_CANNON.get());
+                        pOutput.accept(ItemRegistry.BIRCH_ESSENCE.get());
+                        pOutput.accept(ItemRegistry.BIRCH_GRAPPLER.get());
                     })
                     .build());
 

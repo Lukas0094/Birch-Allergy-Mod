@@ -5,6 +5,7 @@
   "item.birch_allergy.allergy_spray": "Allergie-Spray",
   "item.birch_allergy.birch_cannon": "Birken-Brecher",
   "item.birch_allergy.birch_essence": "Birken Essenz",
+  "item.birch_allergy.birch_grappler": "Birken Greifhaken",
   "death.attack.death.effect.allergy": "%s hat sein Allergie-Spray vergessen",
   "death.attack.death.effect.allergy.player": "%s hat vergessen sein Allergie-Spray zu nutzen während er mit %s gekämpft hat",
   "block.birch_allergy.birch_essence_bucket": "Birken Essenz Eimer",

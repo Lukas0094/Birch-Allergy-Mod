@@ -20,6 +20,9 @@ public class ItemRegistry {
     public static final RegistryObject<Item> BIRCH_ESSENCE = ITEMS.register("birch_essence",
             () -> new Item(new Item.Properties().stacksTo(1)));
 
+    public static final RegistryObject<Item> BIRCH_GRAPPLER = ITEMS.register("birch_grappler",
+            () -> new BirchGrappler(new Item.Properties()));
+
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
