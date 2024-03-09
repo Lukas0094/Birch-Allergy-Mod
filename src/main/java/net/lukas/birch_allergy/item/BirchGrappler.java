@@ -6,6 +6,8 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -56,6 +58,8 @@ public class BirchGrappler extends Item {
                 Vec3 movement = entity.getDeltaMovement();
                 entity.setDeltaMovement(movement.scale(0.85));
             }
+            particleTrail((ServerLevel) level, playerPos.add(0, 1.38, 0).add(entity.getLookAngle()), grapplePos);
+            sounds((ServerLevel) level, playerPos, (float) velocityVector.length());
             entity.hurtMarked = true;
             entity.fallDistance = 0;
         }
@@ -77,6 +81,32 @@ public class BirchGrappler extends Item {
     @Override
     public void onStopUsing(ItemStack stack, LivingEntity entity, int count) {
 
+    }
+
+    public void particleTrail(ServerLevel level, Vec3 startPos, Vec3 endPos) {
+        double n = startPos.subtract(endPos).horizontalDistance();
+        double d = endPos.y-startPos.y;
+        double a = 2*d/(n*(n+1));
+        double x = startPos.x();
+        double y = startPos.y();
+        double z = startPos.z();
+        double xStep = (endPos.x()-startPos.x())/n;
+        double zStep = (endPos.z()-startPos.z())/n;
+        for(int i = 1; i<=n; i++) {
+            for(ServerPlayer player : level.players()) {
+                level.sendParticles(player, ParticleTypes.SNEEZE, true, x, y, z, 1, 0.6, 0.6, 0.6, 0.2);
+                level.sendParticles(player, new DustParticleOptions(new Vector3f(0.2F, 0.9F, 0.05F), 2), true, x, y, z, 1, 0.6, 0.6, 0.6, 0.04);
+            }
+            x+=xStep;
+            y+=a*i;
+            z+=zStep;
+        }
+    }
+
+    public void sounds(ServerLevel level, Vec3 pos, float speed) {
+        float volume = 0.3F*speed;
+        level.playSound(null, BlockPos.containing(pos), SoundEvents.GENERIC_EXPLODE, SoundSource.MASTER, volume, 1.5F);
+        level.playSound(null, BlockPos.containing(pos), SoundEvents.FIREWORK_ROCKET_LAUNCH, SoundSource.MASTER, volume, 1.5F);
     }
 
     public void raycastStart(ServerLevel level, LivingEntity entity, int intensity) {
@@ -101,13 +131,6 @@ public class BirchGrappler extends Item {
             Vec3 particlePos = new Vec3(dx*i/step+entity.getX(), dy*i/step+entity.getY()+1.38, dz*i/step+entity.getZ());
             BlockPos position = BlockPos.containing(particlePos);
             if(!level.getBlockState(position).isAir()) return position;
-            int particles = (int) ((float) intensity / 20F);
-            for(ServerPlayer player : level.players()) {
-                level.sendParticles(player, ParticleTypes.SNEEZE, true, particlePos.x(), particlePos.y(), particlePos.z(), Math.min(intensity, 20), 0, 0, 0, 0.04);
-                if(intensity > 45) {
-                    level.sendParticles(player, new DustParticleOptions(new Vector3f(0.2F, 0.9F, 0.05F), (float) intensity / 45F), true, particlePos.x(), particlePos.y(), particlePos.z(), particles, 0, 0, 0, 0.04);
-                }
-            }
         }
         return null;
     }
