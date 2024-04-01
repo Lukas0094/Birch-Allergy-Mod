@@ -15,6 +15,9 @@ public class EntityRegistry {
     public static final RegistryObject<EntityType<DemonBirchEntity>> DEMON_BIRCH = registerMob("demon_birch", DemonBirchEntity::new,
             3f, 7f, 0x1F1F1F, 0x0D0D0D);
 
+    public static final RegistryObject<EntityType<BirchCultistEntity>> BIRCH_CULTIST = registerMob("birch_cultist", BirchCultistEntity::new,
+            0.6F, 1.95F, 0x1F1F1F, 0x0D0D0D);
+
     public static <T extends Mob> RegistryObject<EntityType<T>> registerMob(String name, EntityType.EntityFactory<T> entity,
                                                                             float width, float height, int primaryEggColor, int secondaryEggColor) {
         RegistryObject<EntityType<T>> entityType = ENTITIES.register(name,

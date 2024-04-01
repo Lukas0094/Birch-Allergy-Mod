@@ -1,5 +1,6 @@
 package net.lukas.birch_allergy;
 
+import net.lukas.birch_allergy.client.renderer.BirchCultistRenderer;
 import net.lukas.birch_allergy.client.renderer.DemonBirchRenderer;
 import net.lukas.birch_allergy.entity.EntityRegistry;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -17,6 +18,7 @@ public final class ClientListener {
     @SubscribeEvent
     public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EntityRegistry.DEMON_BIRCH.get(), DemonBirchRenderer::new);
+        event.registerEntityRenderer(EntityRegistry.BIRCH_CULTIST.get(), BirchCultistRenderer::new);
     }
 
     @SubscribeEvent
