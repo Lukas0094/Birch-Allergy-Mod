@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "E": {
+      "item": "birch_allergy:birch_essence"
+    },
+    "N": {
+      "item": "minecraft:nether_star"
+    }
+  },
+  "pattern": [
+    "EOE",
+    "ONO",
+    "EOE"
+  ],
+  "result": {
+    "item": "birch_allergy:allergy_spray",
+    "count": 1
+  }
+}
